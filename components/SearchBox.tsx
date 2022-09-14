@@ -1,5 +1,12 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { StyleSheet, View, TextInput, Button, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Button,
+  Alert,
+  Modal,
+} from "react-native";
 
 interface TodoItem {
   name: string;
@@ -8,9 +15,10 @@ interface TodoItem {
 
 interface Todo {
   todos: Dispatch<SetStateAction<TodoItem[]>>;
+  show: Dispatch<SetStateAction<boolean>>;
 }
 
-const SearchBox = ({ todos }: Todo) => {
+const SearchBox = ({ todos, show }: Todo) => {
   const [todo, setTodo] = useState("");
   const handleTodo = (t: any) => {
     setTodo(t);
@@ -39,25 +47,39 @@ const SearchBox = ({ todos }: Todo) => {
         placeholder="Enter Todo..."
         value={todo}
       />
-      <Button onPress={handleAddTodo} title="Add Todo" />
+      <View style={styles.wrapper}>
+        <View style={styles.button}>
+          <Button onPress={handleAddTodo} title="Add Todo" />
+        </View>
+        <View style={styles.button}>
+          <Button onPress={() => show(false)} title="Cancel" />
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
+    flex: 1,
+    backgroundColor: "purple",
+    paddingTop: 250,
+    paddingBottom: 30,
   },
   input: {
     borderRadius: 2,
-    width: "80%",
     borderWidth: 2,
-    padding: 3,
-    marginRight: 6,
+    padding: 10,
+    margin: 10,
     textAlign: "center",
+  },
+  wrapper: {
+    paddingTop: 40,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  button: {
+    width: "30%",
   },
 });
 
